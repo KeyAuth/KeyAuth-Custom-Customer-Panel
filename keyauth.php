@@ -191,18 +191,18 @@ class api {
     }
 
     public function error($msg){
-                        echo '
-                <script type=\'text/javascript\'>
+                        echo "
+                <script type=\"text/javascript\">
                 
                 const notyf = new Notyf();
                 notyf
                   .error({
-                    message: \''.$msg.'\',
+                    message: \"".$msg."\",
                     duration: 3500,
                     dismissible: true
                   });                
                 
                 </script>
-                ';  
+                ";  
     }
 }
