@@ -88,7 +88,7 @@ echo '
     <?php
 if (isset($_POST['login']))
 {
-    if($KeyAuthApp->login($_POST['keyauthusername'],$_POST['keyauthusername']))
+    if($KeyAuthApp->login($_POST['keyauthusername'],$_POST['keyauthpassword']))
 	{
 		$_SESSION['un'] = $_POST['keyauthusername'];
 		echo "<meta http-equiv='Refresh' Content='2; url=dashboard/'>";
