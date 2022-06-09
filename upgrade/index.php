@@ -12,7 +12,7 @@ if (isset($_SESSION['un']))
     exit();
 }
 
-$KeyAuthApp = new KeyAuth\api($name, $ownerid);
+$KeyAuthApp = new KeyAuth\api($name, $ownerid, $version);
 
 if (!isset($_SESSION['sessionid'])) 
 {
