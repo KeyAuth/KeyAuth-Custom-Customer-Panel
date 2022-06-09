@@ -1,6 +1,6 @@
 <?php
-
 include '../credentials.php';
+require '../keyauth.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -9,6 +9,8 @@ if (session_status() === PHP_SESSION_NONE) {
 if (!isset($_SESSION['un'])) {
     die("not logged in");
 }
+
+$KeyAuthApp = new KeyAuth\api($name, $ownerid, $version);
 
 $url = "https://keyauth.win/api/seller/?sellerkey={$sellerkey}&type=getsettings";
 
@@ -22,6 +24,10 @@ $download = $json->download;
 $webdownload = $json->webdownload;
 $appcooldown = $json->cooldown;
 
+$numKeys = $KeyAuthApp->numKeys;
+$numUsers = $KeyAuthApp->numUsers;
+$numOnlineUsers = $KeyAuthApp->numOnlineUsers;
+$customerPanelLink = $KeyAuthApp->customerPanelLink;
 ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
@@ -460,3 +466,30 @@ $appcooldown = $json->cooldown;
 <script src="https://cdn.keyauth.uk/dashboard/dist/js/pages/datatable/datatable-advanced.init.js"></script>
 </body>
 </html>
+
+<?php
+#region Extra Functions
+/*
+//* Get Public Variable
+$var = $KeyAuthApp->var("varName");
+echo "Variable Data: " . $var;
+//* Get User Variable
+$var = $KeyAuthApp->getvar("varName");
+echo "Variable Data: " . $var;
+//* Set Up User Variable
+$KeyAuthApp->setvar("varName", "varData");
+//* Log Something to the KeyAuth webhook that you have set up on app settings
+$KeyAuthApp->log("message");
+//* Basic Webhook with params
+$result = $KeyAuthApp->webhook("WebhookID", "&type=add&expiry=1&mask=XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX-XXXXXX&level=1&amount=1&format=text");
+echo "<br> Result from Webhook: " . $result;
+//* Webhook with body and content type
+$result = $KeyAuthApp->webhook("WebhookID", "", "{\"content\": \"webhook message here\",\"embeds\": null}", "application/json");
+echo "<br> Result from Webhook: " . $result;
+//* If first sub is what ever then run code
+if ($subscription === "Premium") {
+	Premium Subscription Code ...
+}
+*/
+#endregion
+?>
