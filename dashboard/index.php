@@ -10,6 +10,13 @@ if (!isset($_SESSION['un'])) {
     die("not logged in");
 }
 
+if (isset($_POST['logout'])) {
+	session_destroy();
+	header("Location: ../");
+	exit();
+}
+
+
 $KeyAuthApp = new KeyAuth\api($name, $ownerid, $version);
 
 $url = "https://keyauth.win/api/seller/?sellerkey={$sellerkey}&type=getsettings";
@@ -149,7 +156,9 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
                                         <h4 class="mb-0"><?php echo $_SESSION['un']; ?></h4>
                                     </div>
                                 </div>
-                                <a class="dropdown-item" href="../../dashboard/account/logout/"><i class="fa fa-power-off mr-1 ml-1"></i> Logout</a>
+                                <form method="POST">
+                                    <button class="dropdown-item" name="logout"><i class="fa fa-power-off mr-1 ml-1"></i> Logout</button>
+                                </form>
                             </div>
                         </li>
                         <!-- ============================================================== -->
