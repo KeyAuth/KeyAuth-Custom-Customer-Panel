@@ -11,15 +11,15 @@ if (!isset($_SESSION['un'])) {
 }
 
 if (isset($_POST['logout'])) {
-	session_destroy();
-	header("Location: ../");
-	exit();
+    session_destroy();
+    header("Location: ../");
+    exit();
 }
 
 
-$KeyAuthApp = new KeyAuth\api($name, $ownerid, $version);
+$KeyAuthApp = new KeyAuth\api($name, $OwnerId);
 
-$url = "https://keyauth.win/api/seller/?sellerkey={$sellerkey}&type=getsettings";
+$url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=getsettings";
 
 $curl = curl_init($url);
 curl_setopt($curl, CURLOPT_URL, $url);
@@ -27,6 +27,11 @@ curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
 $resp = curl_exec($curl);
 $json = json_decode($resp);
+
+if (!$json->success) {
+    die("Error: {$json->message}");
+}
+
 $download = $json->download;
 $webdownload = $json->webdownload;
 $appcooldown = $json->cooldown;
@@ -38,6 +43,7 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
 ?>
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -49,22 +55,22 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
     <title><?php echo $name; ?> Panel</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="https://cdn.keyauth.uk/static/images/favicon.png">
-	<script src="https://cdn.keyauth.uk/dashboard/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.keyauth.uk/dashboard/assets/libs/jquery/dist/jquery.min.js"></script>
     <!-- Custom CSS -->
-	<link href="https://cdn.keyauth.uk/dashboard/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="https://cdn.keyauth.uk/dashboard/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
     <link href="https://cdn.keyauth.uk/dashboard/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet">
     <link href="https://cdn.keyauth.uk/dashboard/assets/extra-libs/c3/c3.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="https://cdn.keyauth.uk/dashboard/dist/css/style.min.css" rel="stylesheet">
-	
-
-	<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-	<script src="https://cdn.keyauth.uk/dashboard/unixtolocal.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
 
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="https://cdn.keyauth.uk/dashboard/unixtolocal.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
 
-	                    
+
+
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -72,6 +78,7 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
+
 <body data-theme="dark">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
@@ -104,10 +111,10 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
                         <!--End Logo icon -->
                         <!-- Logo text -->
                         <span class="logo-text">
-                             <!-- dark Logo text -->
-                             <img src="https://cdn.keyauth.uk/dashboard/assets/images/logo-text.png" alt="homepage" class="dark-logo" />
-                             <!-- Light Logo text -->    
-                             <img src="https://cdn.keyauth.uk/dashboard/assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
+                            <!-- dark Logo text -->
+                            <img src="https://cdn.keyauth.uk/dashboard/assets/images/logo-text.png" alt="homepage" class="dark-logo" />
+                            <!-- Light Logo text -->
+                            <img src="https://cdn.keyauth.uk/dashboard/assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
                         </span>
                     </a>
                     <!-- ============================================================== -->
@@ -136,13 +143,13 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
                         <!-- create new -->
                         <!-- ============================================================== -->
                         <li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle waves-effect waves-dark" href="https://keyauth.com/discord/" target="discord"> <i class="mdi mdi-discord font-24"></i>
-						</a>
-						</li>
-						<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle waves-effect waves-dark" href="https://t.me/KeyAuth" target="telegram"> <i class="mdi mdi-telegram font-24"></i>
-						</a>
-						</li>
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="https://keyauth.com/discord/" target="discord"> <i class="mdi mdi-discord font-24"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="https://t.me/KeyAuth" target="telegram"> <i class="mdi mdi-telegram font-24"></i>
+                            </a>
+                        </li>
                         <!-- ============================================================== -->
                         <!-- User profile and search -->
                         <!-- ============================================================== -->
@@ -196,10 +203,10 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
             <!-- ============================================================== -->
             <!-- ============================================================== -->
             <!-- Container fluid  -->
-        
-			
-			
-   
+
+
+
+
             <!-- ============================================================== -->
             <div class="container-fluid" id="content">
                 <!-- ============================================================== -->
@@ -208,144 +215,126 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
                 <!-- File export -->
                 <div class="row">
                     <div class="col-12">
-					
+
 
                         <div class="card">
-                            <div class="card-body">	
-									<div class="form-group row">
-                                        <label for="example-tel-input" class="col-2 col-form-label">Application Download</label>
-                                        <div class="col-10">
-                                            <a href="<?php echo $download; ?>" style="color:#00FFFF;" target="appdownload"><?php echo $download; ?></a>
-                                        </div>
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label for="example-tel-input" class="col-2 col-form-label">Application Download</label>
+                                    <div class="col-10">
+                                        <a href="<?php echo $download; ?>" style="color:#00FFFF;" target="appdownload"><?php echo $download; ?></a>
                                     </div>
+                                </div>
                                 <?php
-							$un = $_SESSION['un'];
-                            $url = "https://keyauth.win/api/seller/?sellerkey={$sellerkey}&type=userdata&user={$un}";
+                                $un = $_SESSION['un'];
+                                $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=userdata&user={$un}";
 
-							$curl = curl_init($url);
-							curl_setopt($curl, CURLOPT_URL, $url);
-							curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-							
-							$resp = curl_exec($curl);
-							$json = json_decode($resp);
-							$cooldown = $json->cooldown;
-							$token = $json->token;
+                                $curl = curl_init($url);
+                                curl_setopt($curl, CURLOPT_URL, $url);
+                                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-                            if(is_null($cooldown))
+                                $resp = curl_exec($curl);
+                                $json = json_decode($resp);
+                                $cooldown = $json->cooldown;
+                                $token = $json->token;
 
-                            {
+                                if (is_null($cooldown)) {
 
-                            echo'<form method="post">
-
-<button name="resethwid" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-redo-alt fa-sm text-white-50"></i> Reset HWID</button></form>';   
-
-                            }
-
-                            else
-
-                            {
-
-                            if ($today > $cooldown)
-
-                            {
-
-                            echo'<form method="post">
+                                    echo '<form method="post">
 
 <button name="resethwid" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-redo-alt fa-sm text-white-50"></i> Reset HWID</button></form>';
+                                } else {
 
-                            }
+                                    if ($today > $cooldown) {
 
-                            else
+                                        echo '<form method="post">
 
-                            {
+<button name="resethwid" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-redo-alt fa-sm text-white-50"></i> Reset HWID</button></form>';
+                                    } else {
 
-                                echo '<div style="color:red;">You can\'t reset HWID again until <script>document.write(convertTimestamp('.$cooldown.'));</script></div>';
+                                        echo '<div style="color:red;">You can\'t reset HWID again until <script>document.write(convertTimestamp(' . $cooldown . '));</script></div>';
+                                    }
+                                }
 
-                            }
 
-                            }
 
-                        
-
-                        ?>
+                                ?>
                             </div>
                         </div>
-						<?php if (!is_null($webdownload)) { ?>
-						<div class="card">
-                            <div class="card-body">	
-                                <label for="example-tel-input" class="col-2 col-form-label">Web Loader</label>
-                                <br>
-								<br>
-								<div class="col-10" style="display:none;" id="buttons">
-                                            <?php
-											
-											$url = "https://keyauth.win/api/seller/?sellerkey={$sellerkey}&type=fetchallbuttons";
+                        <?php if (!is_null($webdownload)) { ?>
+                            <div class="card">
+                                <div class="card-body">
+                                    <label for="example-tel-input" class="col-2 col-form-label">Web Loader</label>
+                                    <br>
+                                    <br>
+                                    <div class="col-10" style="display:none;" id="buttons">
+                                        <?php
 
-											$curl = curl_init($url);
-											curl_setopt($curl, CURLOPT_URL, $url);
-											curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-											
-											$resp = curl_exec($curl);
-											$json = json_decode($resp);
-											$arr = $json->buttons;
-											foreach($arr as $item)
-											{
-											?>
-											<button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="doButton(this.value)"value="<?php echo $item->value; ?>"><?php echo $item->text; ?></button>
-											<?php
-											}
-											?>
-								</div>
-								<div class="col-10" id="handshake">
-								<a onclick="handshake()" href="<?php echo $webdownload; ?>" style="color:white;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download</a>
-								</div>
-							</div>
-                        </div>
-						<?php } ?>
+                                        $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=fetchallbuttons";
+
+                                        $curl = curl_init($url);
+                                        curl_setopt($curl, CURLOPT_URL, $url);
+                                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                                        $resp = curl_exec($curl);
+                                        $json = json_decode($resp);
+                                        $arr = $json->buttons;
+                                        foreach ($arr as $item) {
+                                        ?>
+                                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="doButton(this.value)" value="<?php echo $item->value; ?>"><?php echo $item->text; ?></button>
+                                        <?php
+                                        }
+                                        ?>
+                                    </div>
+                                    <div class="col-10" id="handshake">
+                                        <a onclick="handshake()" href="<?php echo $webdownload; ?>" style="color:white;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download</a>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
                     </div>
                 </div>
                 <!-- Show / hide columns dynamically -->
-                
+
                 <!-- Column rendering -->
-                
+
                 <!-- Row grouping -->
-                
+
                 <!-- Multiple table control element -->
-                
+
                 <!-- DOM / jQuery events -->
-                
+
                 <!-- Complex headers with column visibility -->
-                
+
                 <!-- language file -->
-                
+
                 <!-- Setting defaults -->
-                
+
                 <!-- Footer callback -->
-                
+
                 <?php
 
-        if (isset($_POST['resethwid']))
-        {
+                if (isset($_POST['resethwid'])) {
 
-        $today = time();
+                    $today = time();
 
-        $cooldown = $today + $appcooldown;
-        $un = $_SESSION['un'];
-        $url = "https://keyauth.win/api/seller/?sellerkey={$sellerkey}&type=resetuser&user={$un}";
+                    $cooldown = $today + $appcooldown;
+                    $un = $_SESSION['un'];
+                    $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=resetuser&user={$un}";
 
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_exec($curl);
-	
-        $url = "https://keyauth.win/api/seller/?sellerkey={$sellerkey}&type=setcooldown&user={$un}&cooldown={$cooldown}";
+                    $curl = curl_init($url);
+                    curl_setopt($curl, CURLOPT_URL, $url);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    curl_exec($curl);
 
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_URL, $url);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_exec($curl);
+                    $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=setcooldown&user={$un}&cooldown={$cooldown}";
 
-        echo '
+                    $curl = curl_init($url);
+                    curl_setopt($curl, CURLOPT_URL, $url);
+                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                    curl_exec($curl);
+
+                    echo '
                             <script type=\'text/javascript\'>
                             
                             const notyf = new Notyf();
@@ -357,13 +346,12 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
                               });                
                             
                             </script>
-                            ';  
-        echo "<meta http-equiv='Refresh' Content='2;'>";   
+                            ';
+                    echo "<meta http-equiv='Refresh' Content='2;'>";
+                }
+                ?>
 
-        }
-        ?>
-        
-		
+
                 <!-- ============================================================== -->
                 <!-- End PAge Content -->
                 <!-- ============================================================== -->
@@ -382,8 +370,10 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
             <!-- footer -->
             <!-- ============================================================== -->
             <footer class="footer text-center">
-       Copyright &copy; 2020-<script>document.write(new Date().getFullYear())</script> <?php echo $name; ?>
-</footer>
+                Copyright &copy; 2020-<script>
+                    document.write(new Date().getFullYear())
+                </script> <?php echo $name; ?>
+            </footer>
             <!-- ============================================================== -->
             <!-- End footer -->
             <!-- ============================================================== -->
@@ -397,42 +387,42 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
     <!-- ============================================================== -->
     <!-- ============================================================== -->
     <script>
-	var going = 1;
-	function handshake()
-	{
-		setTimeout(function() { 
-		var xmlHttp = new XMLHttpRequest();
-		xmlHttp.open( "GET", "http://localhost:1337/handshake?user=<?php echo $_SESSION['un']; ?>&token=<?php echo $token; ?>");
-		xmlHttp.onload = function () {
-			going = 0;
-			switch(xmlHttp.status) {
-				case 420:
-					console.log("returned SHEESH :)");
-					$("#handshake").fadeOut(100);
-					$("#buttons").fadeIn(1900);
-					break;
-				default:
-					alert(xmlHttp.statusText);
-					break;
-			}
-		};
-		xmlHttp.send();
-			if (going == 1) {
-			handshake();
-			}
-		}, 3000);
-	}
-	function doButton(value)
-	{
-		var xmlHttp = new XMLHttpRequest();
-		xmlHttp.open( "GET", "http://localhost:1337/" + value);
-		xmlHttp.send();
-	}
-	</script>
+        var going = 1;
+
+        function handshake() {
+            setTimeout(function() {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open("GET", "http://localhost:1337/handshake?user=<?php echo $_SESSION['un']; ?>&token=<?php echo $token; ?>");
+                xmlHttp.onload = function() {
+                    going = 0;
+                    switch (xmlHttp.status) {
+                        case 420:
+                            console.log("returned SHEESH :)");
+                            $("#handshake").fadeOut(100);
+                            $("#buttons").fadeIn(1900);
+                            break;
+                        default:
+                            alert(xmlHttp.statusText);
+                            break;
+                    }
+                };
+                xmlHttp.send();
+                if (going == 1) {
+                    handshake();
+                }
+            }, 3000);
+        }
+
+        function doButton(value) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open("GET", "http://localhost:1337/" + value);
+            xmlHttp.send();
+        }
+    </script>
     <!-- ============================================================== -->
     <!-- All Jquery -->
     <!-- ============================================================== -->
-    
+
     <!-- Bootstrap tether Core JavaScript -->
     <script src="https://cdn.keyauth.uk/dashboard/assets/libs/popper-js/dist/umd/popper.min.js"></script>
     <script src="https://cdn.keyauth.uk/dashboard/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -448,7 +438,7 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
     <!--Menu sidebar -->
     <script src="https://cdn.keyauth.uk/dashboard/dist/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
-   <script src="https://cdn.keyauth.uk/dashboard/dist/js/feather.min.js"></script>
+    <script src="https://cdn.keyauth.uk/dashboard/dist/js/feather.min.js"></script>
     <script src="https://cdn.keyauth.uk/dashboard/dist/js/custom.min.js"></script>
     <!--This page JavaScript -->
     <!--chartis chart-->
@@ -460,8 +450,8 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
     <!--chartjs -->
     <script src="https://cdn.keyauth.uk/dashboard/assets/libs/chart-js/dist/chart.min.js"></script>
     <script src="https://cdn.keyauth.uk/dashboard/dist/js/pages/dashboards/dashboard1.js"></script>
-		<script src="https://cdn.keyauth.uk/dashboard/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
-	    <!-- start - This is for export functionality only -->
+    <script src="https://cdn.keyauth.uk/dashboard/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
+    <!-- start - This is for export functionality only -->
     <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
@@ -469,11 +459,12 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
-  
-					
 
-<script src="https://cdn.keyauth.uk/dashboard/dist/js/pages/datatable/datatable-advanced.init.js"></script>
+
+
+    <script src="https://cdn.keyauth.uk/dashboard/dist/js/pages/datatable/datatable-advanced.init.js"></script>
 </body>
+
 </html>
 
 <?php

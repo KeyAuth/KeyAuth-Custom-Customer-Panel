@@ -6,27 +6,26 @@ session_start();
 
 class api
 {
-    public $name, $ownerid, $version;
+    public $name, $OwnerId;
 
     public $numUsers, $numKeys, $numOnlineUsers, $customerPanelLink;
 
-    function __construct($name, $ownerid, $version)
+    function __construct($name, $OwnerId)
     {
         $this->name = $name;
-        $this->ownerid = $ownerid;
-        $this->version = $version;
+        $this->OwnerId = $OwnerId;
     }
 
     function init()
     {
-        if ($this->name == "" || $this->ownerid == "" || $this->version == "") {
-            die("Please set your application name, ownerid and version in credentials.php");
+        if ($this->name == "" || $this->OwnerId == "") {
+            die("Please set your application name, ownerid in credentials.php");
         }
 
         $data = array(
             "type" => "init",
             "name" => $this->name,
-            "ownerid" => $this->ownerid
+            "ownerid" => $this->OwnerId
         );
 
         $response = $this->req($data);
@@ -61,7 +60,7 @@ class api
             "pass" => $password,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
-            "ownerid" => $this->ownerid
+            "ownerid" => $this->OwnerId
         );
 
         $response = $this->req($data);
@@ -86,7 +85,7 @@ class api
             "key" => $key,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
-            "ownerid" => $this->ownerid
+            "ownerid" => $this->OwnerId
         );
 
         $response = $this->req($data);
@@ -109,7 +108,7 @@ class api
             "key" => $key,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
-            "ownerid" => $this->ownerid
+            "ownerid" => $this->OwnerId
         );
 
         $response = $this->req($data);
@@ -133,7 +132,7 @@ class api
             "key" => $key,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
-            "ownerid" => $this->ownerid
+            "ownerid" => $this->OwnerId
         );
 
         $response = $this->req($data);
@@ -157,7 +156,7 @@ class api
             "varid" => $varid,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
-            "ownerid" => $this->ownerid
+            "ownerid" => $this->OwnerId
         );
 
         $response = $this->req($data);
@@ -181,7 +180,7 @@ class api
             "message" => $message,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
-            "ownerid" => $this->ownerid
+            "ownerid" => $this->OwnerId
         );
 
         $this->req($data);
@@ -195,7 +194,7 @@ class api
             "data" => $data,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
-            "ownerid" => $this->ownerid
+            "ownerid" => $this->OwnerId
         );
 
         $this->req($data);
@@ -208,7 +207,7 @@ class api
             "var" => $varid,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
-            "ownerid" => $this->ownerid
+            "ownerid" => $this->OwnerId
         );
 
         $response = $this->req($data);
@@ -231,7 +230,7 @@ class api
             "conttype" => $conttype,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
-            "ownerid" => $this->ownerid
+            "ownerid" => $this->OwnerId
         );
 
         $response = $this->req($data);
@@ -280,5 +279,4 @@ class api
                 ';
     }
 }
-
 ?>
