@@ -45,347 +45,288 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
 <html dir="ltr" lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- Tell the browser to be responsive to screen width -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="keywords" content="wrappixel, admin dashboard, html css dashboard, web dashboard, bootstrap 4 admin, bootstrap 4, css3 dashboard, bootstrap 4 dashboard, xtreme admin bootstrap 4 dashboard, frontend, responsive bootstrap 4 admin template, material design, material dashboard bootstrap 4 dashboard template">
-    <meta name="description" content="Xtreme is powerful and clean admin dashboard template, inpired from Google's Material Design">
-    <meta name="robots" content="noindex,nofollow">
+    <base href="">
     <title><?php echo $name; ?> Panel</title>
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="https://cdn.keyauth.uk/static/images/favicon.png">
-    <script src="https://cdn.keyauth.uk/dashboard/assets/libs/jquery/dist/jquery.min.js"></script>
-    <!-- Custom CSS -->
-    <link href="https://cdn.keyauth.uk/dashboard/assets/extra-libs/datatables.net-bs4/css/dataTables.bootstrap4.css" rel="stylesheet">
-    <link href="https://cdn.keyauth.uk/dashboard/assets/libs/chartist/dist/chartist.min.css" rel="stylesheet">
-    <link href="https://cdn.keyauth.uk/dashboard/assets/extra-libs/c3/c3.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link href="https://cdn.keyauth.uk/dashboard/dist/css/style.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="https://cdn.keyauth.cc/v2/panel/media/logos/favicon.ico">
+
+    <link href="https://cdn.keyauth.cc/v2/panel/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css">
 
 
-    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-    <script src="https://cdn.keyauth.uk/dashboard/unixtolocal.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link href="https://cdn.keyauth.cc/v2/panel/plugins/global/plugins.dark.bundle.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.keyauth.cc/v2/panel/css/style.dark.bundle.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.keyauth.uk/dashboard/unixtolocal.js"></script>
+    <style>
+        .secret {
+            color: transparent;
+            text-shadow: 0px 0px 5px #b2b9bf;
+            transition: text-shadow 0.1s linear;
+        }
 
+        .secret:hover {
+            text-shadow: 0px 0px 0px #b2b9bf;
+        }
 
+        .secretlink {
+            color: transparent;
+            text-shadow: 0px 0px 5px #007bff;
+            transition: text-shadow 0.1s linear;
+        }
 
+        .secretlink:hover {
+            text-shadow: 0px 0px 0px #007bff;
+            color: transparent;
+        }
+    </style>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-<![endif]-->
+    <script type="text/javascript">
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
 </head>
 
-<body data-theme="dark">
-    <!-- ============================================================== -->
-    <!-- Preloader - style you can find in spinners.css -->
-    <!-- ============================================================== -->
-
-    <!-- ============================================================== -->
-    <!-- Main wrapper - style you can find in pages.scss -->
-    <!-- ============================================================== -->
-    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin1" data-sidebartype="full" data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
-        <!-- ============================================================== -->
-        <!-- Topbar header - style you can find in pages.scss -->
-        <!-- ============================================================== -->
-        <header class="topbar" data-navbarbg="skin1">
-            <nav class="navbar top-navbar navbar-expand-md navbar-dark">
-                <div class="navbar-header" data-logobg="skin5">
-                    <!-- This is for the sidebar toggle which is visible on mobile only -->
-                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
-                    <!-- ============================================================== -->
-                    <!-- Logo -->
-                    <!-- ============================================================== -->
-                    <a class="navbar-brand">
-                        <!-- Logo icon -->
-                        <b class="logo-icon">
-                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                            <!-- Dark Logo icon -->
-                            <img src="https://cdn.keyauth.uk/dashboard/assets/images/logo-icon.png" alt="homepage" class="dark-logo" />
-                            <!-- Light Logo icon -->
-                            <img src="https://cdn.keyauth.uk/dashboard/assets/images/logo-light-icon.png" alt="homepage" class="light-logo" />
-                        </b>
-                        <!--End Logo icon -->
-                        <!-- Logo text -->
-                        <span class="logo-text">
-                            <!-- dark Logo text -->
-                            <img src="https://cdn.keyauth.uk/dashboard/assets/images/logo-text.png" alt="homepage" class="dark-logo" />
-                            <!-- Light Logo text -->
-                            <img src="https://cdn.keyauth.uk/dashboard/assets/images/logo-light-text.png" class="light-logo" alt="homepage" />
-                        </span>
-                    </a>
-                    <!-- ============================================================== -->
-                    <!-- End Logo -->
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <!-- Toggle which is visible on mobile only -->
-                    <!-- ============================================================== -->
-                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
-                </div>
-                <!-- ============================================================== -->
-                <!-- End Logo -->
-                <!-- ============================================================== -->
-                <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin1">
-                    <!-- ============================================================== -->
-                    <!-- toggle and nav items -->
-                    <!-- ============================================================== -->
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
-                    </ul>
-                    <!-- ============================================================== -->
-                    <!-- Right side toggle and nav items -->
-                    <!-- ============================================================== -->
-                    <ul class="navbar-nav">
-                        <!-- ============================================================== -->
-                        <!-- create new -->
-                        <!-- ============================================================== -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="https://keyauth.com/discord/" target="discord"> <i class="mdi mdi-discord font-24"></i>
-                            </a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle waves-effect waves-dark" href="https://t.me/KeyAuth" target="telegram"> <i class="mdi mdi-telegram font-24"></i>
-                            </a>
-                        </li>
-                        <!-- ============================================================== -->
-                        <!-- User profile and search -->
-                        <!-- ============================================================== -->
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="https://i.imgur.com/TrwYFBa.png" alt="user" class="rounded-circle" width="31"></a>
-                            <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
-                                <span class="with-arrow"><span class="bg-primary"></span></span>
-                                <div class="d-flex no-block align-items-center p-15 bg-primary text-white mb-2">
-                                    <div class=""><img src="https://cdn.keyauth.uk/front/assets/img/favicon.png" alt="user" class="img-circle" width="60"></div>
-                                    <div class="ml-2">
-                                        <h4 class="mb-0"><?php echo $_SESSION['un']; ?></h4>
-                                    </div>
-                                </div>
-                                <form method="POST">
-                                    <button class="dropdown-item" name="logout"><i class="fa fa-power-off mr-1 ml-1"></i> Logout</button>
-                                </form>
-                            </div>
-                        </li>
-                        <!-- ============================================================== -->
-                        <!-- User profile and search -->
-                        <!-- ============================================================== -->
-                    </ul>
-                </div>
-            </nav>
-        </header>
-        <!-- ============================================================== -->
-        <!-- End Topbar header -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Left Sidebar - style you can find in sidebar.scss  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- Page wrapper  -->
-        <!-- ============================================================== -->
-        <div class="page-wrapper">
-            <!-- ============================================================== -->
-            <!-- Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <div class="page-breadcrumb">
-                <div class="row">
-                    <div class="col-5 align-self-center">
-                        <h4 class="page-title"><?php echo $name; ?> Panel</h4>
-                    </div>
-                </div>
+<body id="kt_body" class="page-loading-enabled header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed aside-enabled aside-fixed" style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
+    <div class="header-menu align-items-stretch drawer drawer-end" data-kt-drawer="true" data-kt-drawer-name="header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'
+    200px', '300px' : '250px' }" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}" style="width: 250px !important;">
+        <div class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch" id="#kt_header_menu" data-kt-menu="true">
+            <div class="menu-item me-lg-1">
+                <form method="post" style="margin-top: 12px;">
+                    <button name="logout" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-power-off fa-sm text-white-50"></i> Log out</button>
+                </form>
             </div>
-            <!-- ============================================================== -->
-            <!-- End Bread crumb and right sidebar toggle -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Container fluid  -->
+        </div>
+    </div>
+
+    <div class="d-flex flex-column flex-root">
+
+        <div class="page d-flex flex-row flex-column-fluid">
+
+            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+
+                <div id="kt_header" style="" class="header align-items-stretch">
+
+                    <div class="container-fluid d-flex align-items-stretch justify-content-between">
+
+                        <div class="d-flex align-items-center d-lg-none ms-n2 me-2" title="Show aside menu">
+                            <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_aside_mobile_toggle">
+
+                                <span class="svg-icon svg-icon-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z" fill="black"></path>
+                                        <path opacity="0.3" d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z" fill="black"></path>
+                                    </svg>
+                                </span>
+
+                            </div>
+                        </div>
+
+
+                        <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
+                            <a href="./" class="d-lg-none">
+                                <img alt="Logo" src="https://cdn.keyauth.cc/v2/panel/media/logos/favicon.ico" class="h-30px">
+                            </a>
+                        </div>
+
+
+                        <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
+
+                            <div class="d-flex align-items-stretch" id="kt_header_nav">
 
 
 
-
-            <!-- ============================================================== -->
-            <div class="container-fluid" id="content">
-                <!-- ============================================================== -->
-                <!-- Start Page Content -->
-                <!-- ============================================================== -->
-                <!-- File export -->
-                <div class="row">
-                    <div class="col-12">
+                            </div>
 
 
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="form-group row">
-                                    <label for="example-tel-input" class="col-2 col-form-label">Application Download</label>
-                                    <div class="col-10">
-                                        <a href="<?php echo $download; ?>" style="color:#00FFFF;" target="appdownload"><?php echo $download; ?></a>
-                                    </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+
+                    <div class="toolbar" id="kt_toolbar">
+
+                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
+
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="post d-flex flex-column-fluid" id="kt_post">
+
+                        <div id="kt_content_container" class="container-xxl">
+                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
+
+                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1"><?php echo $name; ?> panel
+                                    <span class="h-20px border-gray-200 border-start ms-3 mx-2"></span>
+                                </h1>
+
+                            </div>
+                            <br>
+                            <br>
+                            <div class="card mb-xl-8">
+
+                                <div class="card-header border-0 pt-5">
+                                    <h3 class="card-title align-items-start flex-column">
+                                        <span class="card-label fw-bolder fs-3 mb-1">Application</span>
+                                    </h3>
                                 </div>
-                                <?php
-                                $un = $_SESSION['un'];
-                                $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=userdata&user={$un}";
 
-                                $curl = curl_init($url);
-                                curl_setopt($curl, CURLOPT_URL, $url);
-                                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-                                $resp = curl_exec($curl);
-                                $json = json_decode($resp);
-                                $cooldown = $json->cooldown;
-                                $token = $json->token;
+                                <div class="card-body py-3">
 
-                                if (is_null($cooldown)) {
+                                    <?php
+                                    $un = $_SESSION['un'];
+                                    $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=userdata&user={$un}";
 
-                                    echo '<form method="post">
+                                    $curl = curl_init($url);
+                                    curl_setopt($curl, CURLOPT_URL, $url);
+                                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
-<button name="resethwid" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-redo-alt fa-sm text-white-50"></i> Reset HWID</button></form>';
-                                } else {
+                                    $resp = curl_exec($curl);
+                                    $json = json_decode($resp);
+                                    $cooldown = $json->cooldown;
+                                    $token = $json->token;
+                                    $today = time();
 
-                                    if ($today > $cooldown) {
+                                    if (is_null($cooldown)) {
 
                                         echo '<form method="post">
-
 <button name="resethwid" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-redo-alt fa-sm text-white-50"></i> Reset HWID</button></form>';
                                     } else {
 
-                                        echo '<div style="color:red;">You can\'t reset HWID again until <script>document.write(convertTimestamp(' . $cooldown . '));</script></div>';
-                                    }
-                                }
+                                        if ($today > $cooldown) {
 
+                                            echo '<form method="post">
+<button name="resethwid" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-redo-alt fa-sm text-white-50"></i> Reset HWID</button></form>';
+                                        } else {
 
-
-                                ?>
-                            </div>
-                        </div>
-                        <?php if (!is_null($webdownload)) { ?>
-                            <div class="card">
-                                <div class="card-body">
-                                    <label for="example-tel-input" class="col-2 col-form-label">Web Loader</label>
-                                    <br>
-                                    <br>
-                                    <div class="col-10" style="display:none;" id="buttons">
-                                        <?php
-
-                                        $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=fetchallbuttons";
-
-                                        $curl = curl_init($url);
-                                        curl_setopt($curl, CURLOPT_URL, $url);
-                                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-                                        $resp = curl_exec($curl);
-                                        $json = json_decode($resp);
-                                        $arr = $json->buttons;
-                                        foreach ($arr as $item) {
-                                        ?>
-                                            <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="doButton(this.value)" value="<?php echo $item->value; ?>"><?php echo $item->text; ?></button>
-                                        <?php
+                                            echo '<div style="color:red;">You can\'t reset HWID again until <script>document.write(convertTimestamp(' . $cooldown . '));</script></div>';
                                         }
-                                        ?>
+                                    }
+
+
+
+                                    ?>
+
+                                    <br>
+                                    <a href="<?php echo $download; ?>" style="color:#00FFFF;" target="appdownload"><?php echo $download; ?></a>
+                                </div>
+
+
+                            </div>
+
+
+                            <?php
+
+                            if (!is_null($webdownload)) {
+                            ?>
+                                <div class="card mb-xl-8">
+
+                                    <div class="card-header border-0 pt-5">
+                                        <h3 class="card-title align-items-start flex-column">
+                                            <span class="card-label fw-bolder fs-3 mb-1">Web Loader</span>
+                                        </h3>
                                     </div>
-                                    <div class="col-10" id="handshake">
-                                        <a onclick="handshake()" href="<?php echo $webdownload; ?>" style="color:white;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download</a>
+
+
+                                    <div class="card-body py-3">
+                                        <div class="col-10" style="display:none;" id="buttons">
+                                            <?php
+
+                                            $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=fetchallbuttons";
+
+
+                                            $curl = curl_init($url);
+                                            curl_setopt($curl, CURLOPT_URL, $url);
+                                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+                                            $resp = curl_exec($curl);
+                                            $json = json_decode($resp);
+                                            $arr = $json->buttons;
+
+                                            if ($arr == "not_found") {
+                                                echo '<div style="color:red;">No buttons found</div>';
+                                            } else {
+                                                foreach ($arr as $item) {
+                                            ?>
+                                                <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="doButton(this.value)" value="<?php echo $item->value; ?>"><?php echo $item->text; ?></button>
+                                            <?php
+                                                }
+                                            } ?>
+                                        </div>
+                                        <div class="col-10" id="handshake">
+                                            <a onclick="handshake()" href="<?php echo $webdownload; ?>" style="color:white;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download</a>
+                                        </div>
+
                                     </div>
                                 </div>
-                            </div>
-                        <?php } ?>
+                            <?php
+                            }
+
+
+
+
+                            ?>
+
+                        </div>
+
                     </div>
+
                 </div>
-                <!-- Show / hide columns dynamically -->
-
-                <!-- Column rendering -->
-
-                <!-- Row grouping -->
-
-                <!-- Multiple table control element -->
-
-                <!-- DOM / jQuery events -->
-
-                <!-- Complex headers with column visibility -->
-
-                <!-- language file -->
-
-                <!-- Setting defaults -->
-
-                <!-- Footer callback -->
-
-                <?php
-
-                if (isset($_POST['resethwid'])) {
-
-                    $today = time();
-
-                    $cooldown = $today + $appcooldown;
-                    $un = $_SESSION['un'];
-                    $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=resetuser&user={$un}";
-
-                    $curl = curl_init($url);
-                    curl_setopt($curl, CURLOPT_URL, $url);
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                    curl_exec($curl);
-
-                    $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=setcooldown&user={$un}&cooldown={$cooldown}";
-
-                    $curl = curl_init($url);
-                    curl_setopt($curl, CURLOPT_URL, $url);
-                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-                    curl_exec($curl);
-
-                    echo '
-                            <script type=\'text/javascript\'>
-                            
-                            const notyf = new Notyf();
-                            notyf
-                              .success({
-                                message: \'Reset HWID!\',
-                                duration: 3500,
-                                dismissible: true
-                              });                
-                            
-                            </script>
-                            ';
-                    echo "<meta http-equiv='Refresh' Content='2;'>";
-                }
-                ?>
 
 
-                <!-- ============================================================== -->
-                <!-- End PAge Content -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Right sidebar -->
-                <!-- ============================================================== -->
-                <!-- .right-sidebar -->
-                <!-- ============================================================== -->
-                <!-- End Right sidebar -->
-                <!-- ============================================================== -->
+                <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
+
+                    <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
+
+                        <div class="text-dark order-2 order-md-1">
+                            <span class="text-gray-800">Copyright © 2020-
+                                <script type="text/javascript">
+                                    document.write(new Date().getFullYear())
+                                </script> · Nelson Cybersecurity LLC
+                            </span>
+                        </div>
+
+                    </div>
+
+                </div>
+
             </div>
-            <!-- ============================================================== -->
-            <!-- End Container fluid  -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- footer -->
-            <!-- ============================================================== -->
-            <footer class="footer text-center">
-                Copyright &copy; 2020-<script>
-                    document.write(new Date().getFullYear())
-                </script> <?php echo $name; ?>
-            </footer>
-            <!-- ============================================================== -->
-            <!-- End footer -->
-            <!-- ============================================================== -->
+
         </div>
-        <!-- ============================================================== -->
-        <!-- End Page wrapper  -->
-        <!-- ============================================================== -->
+
     </div>
-    <!-- ============================================================== -->
-    <!-- End Wrapper -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
+
+
+
+    <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
+
+        <span class="svg-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="black">
+                </rect>
+                <path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="black"></path>
+            </svg>
+        </span>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+    <script src="https://cdn.keyauth.cc/v2/panel/plugins/global/plugins.bundle.js" type="text/javascript"></script>
+    <script src="https://cdn.keyauth.cc/v2/panel/js/scripts.bundle.js" type="text/javascript"></script>
+
+
+    <script src="https://cdn.keyauth.cc/v2/panel/plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
+    <script src="https://cdn.keyauth.cc/v2/panel/plugins/custom/datatables/datatables.js" type="text/javascript"></script>
+
     <script>
         var going = 1;
 
@@ -419,50 +360,45 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
             xmlHttp.send();
         }
     </script>
-    <!-- ============================================================== -->
-    <!-- All Jquery -->
-    <!-- ============================================================== -->
 
-    <!-- Bootstrap tether Core JavaScript -->
-    <script src="https://cdn.keyauth.uk/dashboard/assets/libs/popper-js/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.keyauth.uk/dashboard/assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- apps -->
-    <script src="https://cdn.keyauth.uk/dashboard/dist/js/app.min.js"></script>
-    <script src="https://cdn.keyauth.uk/dashboard/dist/js/app.init.dark.js"></script>
-    <script src="https://cdn.keyauth.uk/dashboard/dist/js/app-style-switcher.js"></script>
-    <!-- slimscrollbar scrollbar JavaScript -->
-    <script src="https://cdn.keyauth.uk/dashboard/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-    <script src="https://cdn.keyauth.uk/dashboard/assets/extra-libs/sparkline/sparkline.js"></script>
-    <!--Wave Effects -->
-    <script src="https://cdn.keyauth.uk/dashboard/dist/js/waves.js"></script>
-    <!--Menu sidebar -->
-    <script src="https://cdn.keyauth.uk/dashboard/dist/js/sidebarmenu.js"></script>
-    <!--Custom JavaScript -->
-    <script src="https://cdn.keyauth.uk/dashboard/dist/js/feather.min.js"></script>
-    <script src="https://cdn.keyauth.uk/dashboard/dist/js/custom.min.js"></script>
-    <!--This page JavaScript -->
-    <!--chartis chart-->
-    <script src="https://cdn.keyauth.uk/dashboard/assets/libs/chartist/dist/chartist.min.js"></script>
-    <script src="https://cdn.keyauth.uk/dashboard/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
-    <!--c3 charts -->
-    <script src="https://cdn.keyauth.uk/dashboard/assets/extra-libs/c3/d3.min.js"></script>
-    <script src="https://cdn.keyauth.uk/dashboard/assets/extra-libs/c3/c3.min.js"></script>
-    <!--chartjs -->
-    <script src="https://cdn.keyauth.uk/dashboard/assets/libs/chart-js/dist/chart.min.js"></script>
-    <script src="https://cdn.keyauth.uk/dashboard/dist/js/pages/dashboards/dashboard1.js"></script>
-    <script src="https://cdn.keyauth.uk/dashboard/assets/extra-libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <!-- start - This is for export functionality only -->
-    <script src="https://cdn.datatables.net/buttons/1.5.1/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.flash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.32/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/1.5.1/js/buttons.print.min.js"></script>
+    <?php
 
+    if (isset($_POST['resethwid'])) {
 
+        $today = time();
 
-    <script src="https://cdn.keyauth.uk/dashboard/dist/js/pages/datatable/datatable-advanced.init.js"></script>
+        $cooldown = $today + $appcooldown;
+        $un = $_SESSION['un'];
+        $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=resetuser&user={$un}";
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($curl);
+
+        $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=setcooldown&user={$un}&cooldown={$cooldown}";
+
+        $curl = curl_init($url);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($curl);
+
+        echo '
+                            <script type=\'text/javascript\'>
+                            
+                            const notyf = new Notyf();
+                            notyf
+                              .success({
+                                message: \'Reset HWID!\',
+                                duration: 3500,
+                                dismissible: true
+                              });                
+                            
+                            </script>
+                            ';
+        echo "<meta http-equiv='Refresh' Content='2;'>";
+    }
+    ?>
 </body>
 
 </html>
