@@ -1,4 +1,4 @@
-# Custom-Customer-Panel
+# Custom-Customer-Panel : Please star 🌟
 Custom Customer Panel - Host your authentication dashboard
 
 Tutorial Video: https://www.youtube.com/watch?v=iSk_xZnU9kQ
