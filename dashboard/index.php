@@ -291,7 +291,7 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
                             <span class="text-gray-800">Copyright © 2020-
                                 <script type="text/javascript">
                                     document.write(new Date().getFullYear())
-                                </script> · Nelson Cybersecurity LLC
+                                </script> · KeyAuth LLC
                             </span>
                         </div>
 

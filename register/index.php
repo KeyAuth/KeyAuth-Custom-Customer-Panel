@@ -19,12 +19,12 @@ if (!isset($_SESSION['sessionid'])) {
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="bg-[#09090d] text-white overflow-x-hidden">
 
 <head>
-	<meta charset="utf-8">
+    <meta charset="utf-8">
 
-	<?php
+    <?php
 	echo '
 	    <title>KeyAuth - Register to ' . $name . ' Panel</title>
 	    <meta name="og:image" content="https://cdn.keyauth.cc/front/assets/img/favicon.png">
@@ -32,112 +32,82 @@ if (!isset($_SESSION['sessionid'])) {
         ';
 	?>
 
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
 
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-	<link href="https://cdn.keyauth.cc/v2/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css">
-	<link href="https://cdn.keyauth.cc/v2/assets/css/style.bundle.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.keyauth.cc/v3/dist/output.css" />
 
-	<style>
-		/* width */
-		::-webkit-scrollbar {
-			width: 10px;
-		}
-
-		/* Track */
-		::-webkit-scrollbar-track {
-			box-shadow: inset 0 0 5px grey;
-			border-radius: 10px;
-		}
-
-		/* Handle */
-		::-webkit-scrollbar-thumb {
-			background: #2549e8;
-			border-radius: 10px;
-		}
-
-		/* Handle on hover */
-		::-webkit-scrollbar-thumb:hover {
-			background: #0a2bbf;
-		}
-	</style>
-
-	<script type="text/javascript">
-		if (window.history.replaceState) {
-			window.history.replaceState(null, null, window.location.href);
-		}
-	</script>
+    <script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+    </script>
 </head>
 
-<body class="bg-dark">
-	<div class="d-flex flex-column flex-root">
-		<div class="d-flex flex-column flex-column-fluid bgi-position-y-bottom position-x-center bgi-no-repeat bgi-size-contain bgi-attachment-fixed">
-			<div class="d-flex flex-center flex-column flex-column-fluid p-10 pb-lg-20">
-				<div class="w-lg-500px bg-body rounded shadow-sm p-10 p-lg-15 mx-auto">
-					<form class="form w-100" method="post">
+<body>
+    <!--Navbar-->
+    <header>
+        <nav class="border-gray-200 px-4 lg:px-6 py-2.5 mb-14">
+            <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+                <a href="../" class="flex items-center">
+                    <img src="https://cdn.keyauth.cc/v2/assets/media/logos/logo-1-dark.png" class="mr-3 h-12 mt-2"
+                        alt="KeyAuth Logo" />
+                </a>
+            </div>
+        </nav>
+    </header>
 
-						<div class="text-center mb-10">
+    <section>
+        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-16">
+            <div class="flex flex-col justify-center">
+                <h1
+                    class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white-900 md:text-5xl lg:text-6xl">
+                    Register with <?= $name; ?></h1>
+                <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl">Please register an account for the panel
+                    you are trying to access.
+                    This page is <b>NOT</b> the KeyAuth register page. If you do not know how you got here, or if you
+                    were not given permission to access
+                    this panel, please exit the page now.
+                </p>
+            </div>
+            <div>
+                <div class="w-full lg:max-w-xl p-6 space-y-8 sm:p-8 bg-[#09090d] rounded-lg shadow-xl">
+                    <form class="mt-8 space-y-6" method="post">
+                        <div class="relative">
+                            <input type="text" name="username"
+                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white-900 bg-transparent rounded-lg border-1 border-gray-700 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " autocomplete="on" required />
+                            <label for="username"
+                                class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Username</label>
+                        </div>
+                        <div class="relative">
+                            <input type="password" name="password"
+                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white-900 bg-transparent rounded-lg border-1 border-gray-700 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " autocomplete="on" required />
+                            <label for="password"
+                                class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Password</label>
+                        </div>
+                        <div class="relative">
+                            <input type="text" name="license"
+                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white-900 bg-transparent rounded-lg border-1 border-gray-700 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                                placeholder=" " autocomplete="on" required />
+                            <label for="license"
+                                class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">License</label>
+                        </div>
+                        <button name="register"
+                            class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 sm:w-full">Register
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 
-							<h1 class="text-light mb-3">Register to <?php echo $name; ?></h1>
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script src="https://cdn.keyauth.cc/v3/dist/flowbite.js"></script>
 
-						</div>
-
-
-						<div class="fv-row mb-10">
-
-							<label class="form-label fs-6 fw-bolder text-light">Username</label>
-
-
-							<input class="form-control text-light" type="text" name="username" placeholder="Enter Username" autocomplete="on">
-							<div class="form-group row">
-								<br>
-							</div>
-
-
-							<div class="fv-row mb-5">
-
-								<div class="d-flex flex-stack mb-2">
-									<label class="form-label fw-bolder text-light fs-6 mb-0">Password</label>
-								</div>
-
-
-								<input class="form-control text-light" type="text" name="password" placeholder="Enter Password" autocomplete="on">
-
-							</div>
-							<div class="fv-row">
-								<div class="d-flex flex-stack mb-2">
-									<label class="form-label fw-bolder text-light fs-6 mb-0">License</label>
-								</div>
-
-								<input class="form-control text-light" type="text" name="license" placeholder="Enter License" autocomplete="on">
-							</div>
-							<div class="fv-row mb-10">
-
-								<br>
-
-								<div class="text-center">
-
-									<button name="register" class="btn btn-lg btn-primary w-100 mb-5">
-										<span class="indicator-label">Continue</span>
-										<span class="indicator-progress">Please wait...
-											<span class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-									</button>
-
-								</div>
-							</div>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-	<script src="https://cdn.keyauth.cc/v2/assets/plugins/global/plugins.bundle.js" type="text/javascript"></script>
-	<script src="https://cdn.keyauth.cc/v2/assets/js/scripts.bundle.js" type="text/javascript"></script>
-
-	<?php
+    <?php
 	if (isset($_POST['register'])) {
 		if ($KeyAuthApp->register($_POST['username'], $_POST['password'], $_POST['license'])) {
 			$_SESSION['un'] = $_POST['username'];
