@@ -364,8 +364,101 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
     <?php
 
     if (isset($_POST['resethwid'])) {
+	$un = $_SESSION['un'];
+    	$url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=userdata&user={$un}";
 
-        $today = time();
+    	$curl = curl_init($url);
+    	curl_setopt($curl, CURLOPT_URL, $url);
+    	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+	$resp = curl_exec($curl);
+    	$json = json_decode($resp);
+	$usercooldown = $json->cooldown;
+	$today = time();
+	if (is_null($cooldown)) {
+			$cooldown = $today + $appcooldown;
+        		$un = $_SESSION['un'];
+        		$url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=resetuser&user={$un}";
+
+        		$curl = curl_init($url);
+        		curl_setopt($curl, CURLOPT_URL, $url);
+        		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        		curl_exec($curl);
+
+        		$url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=setcooldown&user={$un}&cooldown={$cooldown}";
+
+        		$curl = curl_init($url);
+        		curl_setopt($curl, CURLOPT_URL, $url);
+        		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        		curl_exec($curl);
+
+        		echo '
+                            		<script type=\'text/javascript\'>
+                            
+                            		const notyf = new Notyf();
+                            		notyf
+                              		.success({
+                                		message: \'Reset HWID!\',
+                                		duration: 3500,
+                                		dismissible: true
+                              		});                
+                            
+                            		</script>
+                            		';
+        		echo "<meta http-equiv='Refresh' Content='2;'>";
+	}
+	else
+	{
+		if($today > $usercooldown)
+		{
+			$cooldown = $today + $appcooldown;
+        		$un = $_SESSION['un'];
+        		$url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=resetuser&user={$un}";
+
+        		$curl = curl_init($url);
+        		curl_setopt($curl, CURLOPT_URL, $url);
+        		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        		curl_exec($curl);
+
+        		$url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=setcooldown&user={$un}&cooldown={$cooldown}";
+
+        		$curl = curl_init($url);
+        		curl_setopt($curl, CURLOPT_URL, $url);
+        		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        		curl_exec($curl);
+
+        		echo '
+                            		<script type=\'text/javascript\'>
+                            
+                            		const notyf = new Notyf();
+                            		notyf
+                              		.success({
+                                		message: \'Reset HWID!\',
+                                		duration: 3500,
+                                		dismissible: true
+                              		});                
+                            
+                            		</script>
+                            		';
+        		echo "<meta http-equiv='Refresh' Content='2;'>";
+				}
+			else
+			{
+        			echo '
+                            	<script type=\'text/javascript\'>
+                            
+                            	const notyf = new Notyf();
+                            	notyf
+                              	.error({
+                                	message: \'Wait Cooldown!\',
+                                	duration: 3500,
+                                	dismissible: true
+                              	});                
+                            
+                            	</script>
+                            	';
+		}
+	}
+        
 
         $cooldown = $today + $appcooldown;
         $un = $_SESSION['un'];
