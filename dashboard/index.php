@@ -32,9 +32,9 @@ if (!$json->success) {
     die("Error: {$json->message}");
 }
 
-$download = $json->download;
-$webdownload = $json->webdownload;
-$appcooldown = $json->cooldown;
+$download = $json->download ?? null;
+$webdownload = $json->webdownload ?? null;
+$appcooldown = $json->cooldown ?? 0;
 
 $numKeys = $KeyAuthApp->numKeys;
 $numUsers = $KeyAuthApp->numUsers;
@@ -100,15 +100,10 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
     </div>
 
     <div class="d-flex flex-column flex-root">
-
         <div class="page d-flex flex-row flex-column-fluid">
-
             <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-
-                <div id="kt_header" style="" class="header align-items-stretch">
-
+                <div id="kt_header" class="header align-items-stretch">
                     <div class="container-fluid d-flex align-items-stretch justify-content-between">
-
                         <div class="d-flex align-items-center d-lg-none ms-n2 me-2" title="Show aside menu">
                             <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_aside_mobile_toggle">
 
@@ -122,63 +117,41 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
                             </div>
                         </div>
 
-
                         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
                             <a href="./" class="d-lg-none">
                                 <img alt="Logo" src="https://cdn.keyauth.cc/v2/panel/media/logos/favicon.ico" class="h-30px">
                             </a>
                         </div>
 
-
                         <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
-
                             <div class="d-flex align-items-stretch" id="kt_header_nav">
 
-
-
                             </div>
-
-
-
                         </div>
-
                     </div>
-
                 </div>
 
-
                 <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-
                     <div class="toolbar" id="kt_toolbar">
-
                         <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
 
-
-
                         </div>
-
                     </div>
 
                     <div class="post d-flex flex-column-fluid" id="kt_post">
-
                         <div id="kt_content_container" class="container-xxl">
                             <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
-
                                 <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1"><?php echo $name; ?> panel
                                     <span class="h-20px border-gray-200 border-start ms-3 mx-2"></span>
                                 </h1>
-
                             </div>
-                            <br>
-                            <br>
+                            <br><br>
                             <div class="card mb-xl-8">
-
                                 <div class="card-header border-0 pt-5">
                                     <h3 class="card-title align-items-start flex-column">
                                         <span class="card-label fw-bolder fs-3 mb-1">Application</span>
                                     </h3>
                                 </div>
-
 
                                 <div class="card-body py-3">
 
@@ -192,57 +165,49 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
 
                                     $resp = curl_exec($curl);
                                     $json = json_decode($resp);
-                                    $cooldown = $json->cooldown;
+                                    $cooldown = $json->cooldown ?? 0;
                                     $token = $json->token;
                                     $today = time();
 
-                                    if (is_null($cooldown)) {
+                                    $canReset = is_null($cooldown) || $today >= $cooldown;?>
+                                
+                                    <?php if ($canReset): ?> 
+                                        <form method="post">
+                                            <button name="resethwid"class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                                <i class="fas fa-redo-alt fa-sm text-white-50"></i> Reset HWID
+                                            </button>
+                                        </form>
 
-                                        echo '<form method="post">
-<button name="resethwid" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-redo-alt fa-sm text-white-50"></i> Reset HWID</button></form>';
-                                    } else {
-
-                                        if ($today > $cooldown) {
-
-                                            echo '<form method="post">
-<button name="resethwid" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-redo-alt fa-sm text-white-50"></i> Reset HWID</button></form>';
-                                        } else {
-
-                                            echo '<div style="color:red;">You can\'t reset HWID again until <script>document.write(convertTimestamp(' . $cooldown . '));</script></div>';
-                                        }
-                                    }
-
-
-
-                                    ?>
+                                        <?php else: ?>
+                                            <div style="color:red;">
+                                                You can’t reset HWID again until
+                                                <script>
+                                                    document.write(convertTimestamp(<?= json_encode((int)$cooldown, JSON_NUMERIC_CHECK) ?>));
+                                                    </script>
+                                            </div>
+                                        <?php endif; ?>
 
                                     <br>
                                     <a href="<?php echo $download; ?>" style="color:#00FFFF;" target="appdownload"><?php echo $download; ?></a>
                                 </div>
-
-
                             </div>
-
 
                             <?php
 
                             if (!is_null($webdownload)) {
                             ?>
                                 <div class="card mb-xl-8">
-
                                     <div class="card-header border-0 pt-5">
                                         <h3 class="card-title align-items-start flex-column">
                                             <span class="card-label fw-bolder fs-3 mb-1">Web Loader</span>
                                         </h3>
                                     </div>
 
-
                                     <div class="card-body py-3">
                                         <div class="col-10" style="display:none;" id="buttons">
                                             <?php
 
                                             $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=fetchallbuttons";
-
 
                                             $curl = curl_init($url);
                                             curl_setopt($curl, CURLOPT_URL, $url);
@@ -270,23 +235,14 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
                                 </div>
                             <?php
                             }
-
-
-
-
                             ?>
 
                         </div>
-
                     </div>
-
                 </div>
 
-
                 <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
-
                     <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
-
                         <div class="text-dark order-2 order-md-1">
                             <span class="text-gray-800">Copyright © 2020-
                                 <script type="text/javascript">
@@ -294,21 +250,13 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
                                 </script> · KeyAuth LLC
                             </span>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
-
-
     <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
-
         <span class="svg-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="black">
@@ -316,13 +264,12 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
                 <path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="black"></path>
             </svg>
         </span>
-
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
     <script src="https://cdn.keyauth.cc/v2/panel/plugins/global/plugins.bundle.js" type="text/javascript"></script>
     <script src="https://cdn.keyauth.cc/v2/panel/js/scripts.bundle.js" type="text/javascript"></script>
-
 
     <script src="https://cdn.keyauth.cc/v2/panel/plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
     <script src="https://cdn.keyauth.cc/v2/panel/plugins/custom/datatables/datatables.js" type="text/javascript"></script>
