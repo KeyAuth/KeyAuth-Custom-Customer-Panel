@@ -52,7 +52,7 @@ class api
         }
     }
 
-    function login($username, $password)
+    function login($username, $password, $code = null)
     {
         $data = array(
             "type" => "login",
@@ -60,7 +60,8 @@ class api
             "pass" => $password,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
-            "ownerid" => $this->OwnerId
+            "ownerid" => $this->OwnerId,
+            "code" => $code ? $code : null
         );
 
         $response = $this->req($data);
@@ -76,13 +77,14 @@ class api
         return $json->success;
     }
 
-    function register($username, $password, $key)
+    function register($username, $password, $key, $email = null)
     {
         $data = array(
             "type" => "register",
             "username" => $username,
             "pass" => $password,
             "key" => $key,
+            "email" => $email,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
             "ownerid" => $this->OwnerId
@@ -101,14 +103,15 @@ class api
         return $json->success;
     }
 
-    function license($key)
+    function license($key, $code = null)
     {
         $data = array(
             "type" => "license",
             "key" => $key,
             "sessionid" => $_SESSION['sessionid'],
             "name" => $this->name,
-            "ownerid" => $this->OwnerId
+            "ownerid" => $this->OwnerId,
+            "code" => $code ? $code : null
         );
 
         $response = $this->req($data);
@@ -245,7 +248,7 @@ class api
 
     private function req($data)
     {
-        $curl = curl_init("https://keyauth.win/api/1.1/");
+        $curl = curl_init("https://keyauth.win/api/1.3/");
         curl_setopt($curl, CURLOPT_USERAGENT, "KeyAuth");
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 

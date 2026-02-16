@@ -32,53 +32,56 @@ if (!$json->success) {
     die("Error: {$json->message}");
 }
 
-$download = $json->download ?? null;
-$webdownload = $json->webdownload ?? null;
-$appcooldown = $json->cooldown ?? 0;
+$download = $json->functions->download ?? null;
+$webdownload = $json->functions->webdownload ?? null;
+$appcooldown = $json->functions->cooldown ?? 0;
 
 $numKeys = $KeyAuthApp->numKeys;
 $numUsers = $KeyAuthApp->numUsers;
 $numOnlineUsers = $KeyAuthApp->numOnlineUsers;
 $customerPanelLink = $KeyAuthApp->customerPanelLink;
+
+$un = $_SESSION['un'];
+$url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=userdata&user={$un}";
+
+$curl = curl_init($url);
+curl_setopt($curl, CURLOPT_URL, $url);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+$resp = curl_exec($curl);
+$userData = json_decode($resp, true);
+
+if (!$userData['success']) {
+    die("Error: {$userData['message']}");
+}
+
+$hwid = $userData['hwid'] ?? "Not Set";
+$cooldown = $userData['cooldown'] ?? 0;
+$token = $userData['token'];
+$subscriptions = $userData['subscriptions'] ?? [];
+$today = time();
+
+$canReset = is_null($cooldown) || $today >= $cooldown;
 ?>
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
+<html lang="en" class="bg-custom-back-1 text-white overflow-x-hidden">
 
 <head>
     <base href="">
-    <title><?php echo $name; ?> Panel</title>
+    <title><?= $name; ?> Panel</title>
     <meta charset="utf-8">
-    <link rel="shortcut icon" href="https://cdn.keyauth.cc/v2/panel/media/logos/favicon.ico">
-
-    <link href="https://cdn.keyauth.cc/v2/panel/plugins/custom/datatables/datatables.bundle.css" rel="stylesheet" type="text/css">
-
+    <link rel="shortcut icon" href="https://cdn.keyauth.cc/global/imgs/Favicon.png">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-    <link href="https://cdn.keyauth.cc/v2/panel/plugins/global/plugins.dark.bundle.css" rel="stylesheet" type="text/css">
-    <link href="https://cdn.keyauth.cc/v2/panel/css/style.dark.bundle.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <script src="https://cdn.keyauth.uk/dashboard/unixtolocal.js"></script>
-    <style>
-        .secret {
-            color: transparent;
-            text-shadow: 0px 0px 5px #b2b9bf;
-            transition: text-shadow 0.1s linear;
-        }
 
-        .secret:hover {
-            text-shadow: 0px 0px 0px #b2b9bf;
-        }
-
-        .secretlink {
-            color: transparent;
-            text-shadow: 0px 0px 5px #007bff;
-            transition: text-shadow 0.1s linear;
-        }
-
-        .secretlink:hover {
-            text-shadow: 0px 0px 0px #007bff;
-            color: transparent;
-        }
-    </style>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="https://cdn.keyauth.cc/v4/css/oput.css">
 
     <script type="text/javascript">
         if (window.history.replaceState) {
@@ -87,194 +90,218 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
     </script>
 </head>
 
-<body id="kt_body" class="page-loading-enabled header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed aside-enabled aside-fixed" style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
-    <div class="header-menu align-items-stretch drawer drawer-end" data-kt-drawer="true" data-kt-drawer-name="header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'
-    200px', '300px' : '250px' }" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}" style="width: 250px !important;">
-        <div class="menu menu-lg-rounded menu-column menu-lg-row menu-state-bg menu-title-gray-700 menu-state-title-primary menu-state-icon-primary menu-state-bullet-primary menu-arrow-gray-400 fw-bold my-5 my-lg-0 align-items-stretch" id="#kt_header_menu" data-kt-menu="true">
-            <div class="menu-item me-lg-1">
-                <form method="post" style="margin-top: 12px;">
-                    <button name="logout" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-power-off fa-sm text-white-50"></i> Log out</button>
-                </form>
-            </div>
+<body class="bg-custom-back-1 text-white antialiased">
+    <nav class="bg-custom-back border-b border-gray-800 py-4 px-6 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center space-x-4">
+            <img src="https://cdn.keyauth.cc/global/imgs/Favicon.png" class="h-8" alt="Logo">
+            <h1 class="text-xl font-bold"><?= $name; ?> Dashboard</h1>
         </div>
-    </div>
+        <form method="post">
+            <button name="logout" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition duration-200 flex items-center">
+                <i class="lni lni-power-switch mr-2"></i> Log out
+            </button>
+        </form>
+    </nav>
 
-    <div class="d-flex flex-column flex-root">
-        <div class="page d-flex flex-row flex-column-fluid">
-            <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
-                <div id="kt_header" class="header align-items-stretch">
-                    <div class="container-fluid d-flex align-items-stretch justify-content-between">
-                        <div class="d-flex align-items-center d-lg-none ms-n2 me-2" title="Show aside menu">
-                            <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px" id="kt_aside_mobile_toggle">
+    <main class="max-w-7xl mx-auto p-6">
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-white mb-1">Customer Dashboard</h2>
+            <p class="text-sm text-gray-400">Manage your account settings and view account information</p>
+        </div>
 
-                                <span class="svg-icon svg-icon-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        <path d="M21 7H3C2.4 7 2 6.6 2 6V4C2 3.4 2.4 3 3 3H21C21.6 3 22 3.4 22 4V6C22 6.6 21.6 7 21 7Z" fill="black"></path>
-                                        <path opacity="0.3" d="M21 14H3C2.4 14 2 13.6 2 13V11C2 10.4 2.4 10 3 10H21C21.6 10 22 10.4 22 11V13C22 13.6 21.6 14 21 14ZM22 20V18C22 17.4 21.6 17 21 17H3C2.4 17 2 17.4 2 18V20C2 20.6 2.4 21 3 21H21C21.6 21 22 20.6 22 20Z" fill="black"></path>
-                                    </svg>
-                                </span>
-
-                            </div>
-                        </div>
-
-                        <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-                            <a href="./" class="d-lg-none">
-                                <img alt="Logo" src="https://cdn.keyauth.cc/v2/panel/media/logos/favicon.ico" class="h-30px">
-                            </a>
-                        </div>
-
-                        <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
-                            <div class="d-flex align-items-stretch" id="kt_header_nav">
-
-                            </div>
-                        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-custom-back rounded-xl p-6 border border-gray-800/50 shadow-lg">
+                <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="lni lni-user mr-2 text-blue-500"></i> Account Information
+                </h2>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center py-2 border-b border-gray-800/30">
+                        <span class="text-gray-400">Account Created</span>
+                        <span class="text-white font-medium"><?= isset($userData['createdate']) ? date('M d, Y', is_numeric($userData['createdate']) ? $userData['createdate'] : strtotime($userData['createdate'])) : 'N/A'; ?></span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-gray-800/30">
+                        <span class="text-gray-400">Username</span>
+                        <span class="text-white font-medium"><?= htmlspecialchars($un); ?></span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-gray-800/30">
+                        <span class="text-gray-400">HWID</span>
+                        <span class="text-blue-600"><?= $hwid; ?></span>
+                    </div>
+                    <div class="flex justify-between items-center py-2">
+                        <span class="text-gray-400">2FA Status</span>
+                        <span class="<?= isset($userData['2fa']) && $userData['2fa'] ? 'text-green-400' : 'text-red-400'; ?> font-medium">
+                            <?= isset($userData['2fa']) && $userData['2fa'] ? 'Enabled' : 'Disabled'; ?>
+                        </span>
                     </div>
                 </div>
+            </div>
 
-                <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-                    <div class="toolbar" id="kt_toolbar">
-                        <div id="kt_toolbar_container" class="container-fluid d-flex flex-stack">
-
-                        </div>
-                    </div>
-
-                    <div class="post d-flex flex-column-fluid" id="kt_post">
-                        <div id="kt_content_container" class="container-xxl">
-                            <div data-kt-swapper="true" data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_content_container', 'lg': '#kt_toolbar_container'}" class="page-title d-flex align-items-center flex-wrap me-3 mb-5 mb-lg-0">
-                                <h1 class="d-flex align-items-center text-dark fw-bolder fs-3 my-1"><?php echo $name; ?> panel
-                                    <span class="h-20px border-gray-200 border-start ms-3 mx-2"></span>
-                                </h1>
-                            </div>
-                            <br><br>
-                            <div class="card mb-xl-8">
-                                <div class="card-header border-0 pt-5">
-                                    <h3 class="card-title align-items-start flex-column">
-                                        <span class="card-label fw-bolder fs-3 mb-1">Application</span>
-                                    </h3>
-                                </div>
-
-                                <div class="card-body py-3">
-
-                                    <?php
-                                    $un = $_SESSION['un'];
-                                    $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=userdata&user={$un}";
-
-                                    $curl = curl_init($url);
-                                    curl_setopt($curl, CURLOPT_URL, $url);
-                                    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-                                    $resp = curl_exec($curl);
-                                    $json = json_decode($resp);
-                                    $cooldown = $json->cooldown ?? 0;
-                                    $token = $json->token;
-                                    $today = time();
-
-                                    $canReset = is_null($cooldown) || $today >= $cooldown;?>
-                                
-                                    <?php if ($canReset): ?> 
-                                        <form method="post">
-                                            <button name="resethwid"class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                                <i class="fas fa-redo-alt fa-sm text-white-50"></i> Reset HWID
-                                            </button>
-                                        </form>
-
-                                        <?php else: ?>
-                                            <div style="color:red;">
-                                                You can’t reset HWID again until
-                                                <script>
-                                                    document.write(convertTimestamp(<?= json_encode((int)$cooldown, JSON_NUMERIC_CHECK) ?>));
-                                                    </script>
-                                            </div>
-                                        <?php endif; ?>
-
-                                    <br>
-                                    <a href="<?php echo $download; ?>" style="color:#00FFFF;" target="appdownload"><?php echo $download; ?></a>
-                                </div>
-                            </div>
-
+            <div class="bg-custom-back rounded-xl p-6 border border-gray-800/50 shadow-lg">
+                <h2 class="text-xl font-semibold text-white mb-4 flex items-center">
+                    <i class="lni lni-calendar mr-2 text-blue-500"></i> Subscription Status
+                </h2>
+                <div class="space-y-4">
+                    <?php if (!empty($subscriptions)): ?>
+                        <?php foreach ($subscriptions as $sub): ?>
                             <?php
-
-                            if (!is_null($webdownload)) {
+                            $isExpired = $sub['expiry'] < time();
+                            $statusColor = $isExpired ? 'text-red-400 bg-red-400/10' : 'text-green-400 bg-green-400/10';
+                            $statusText = $isExpired ? 'Expired' : 'Active';
                             ?>
-                                <div class="card mb-xl-8">
-                                    <div class="card-header border-0 pt-5">
-                                        <h3 class="card-title align-items-start flex-column">
-                                            <span class="card-label fw-bolder fs-3 mb-1">Web Loader</span>
-                                        </h3>
-                                    </div>
-
-                                    <div class="card-body py-3">
-                                        <div class="col-10" style="display:none;" id="buttons">
-                                            <?php
-
-                                            $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=fetchallbuttons";
-
-                                            $curl = curl_init($url);
-                                            curl_setopt($curl, CURLOPT_URL, $url);
-                                            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-
-                                            $resp = curl_exec($curl);
-                                            $json = json_decode($resp);
-                                            $arr = $json->buttons;
-
-                                            if ($arr == "not_found") {
-                                                echo '<div style="color:red;">No buttons found</div>';
-                                            } else {
-                                                foreach ($arr as $item) {
-                                            ?>
-                                                <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" onclick="doButton(this.value)" value="<?php echo $item->value; ?>"><?php echo $item->text; ?></button>
-                                            <?php
-                                                }
-                                            } ?>
-                                        </div>
-                                        <div class="col-10" id="handshake">
-                                            <a onclick="handshake()" href="<?php echo $webdownload; ?>" style="color:white;" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Download</a>
-                                        </div>
-
-                                    </div>
+                            <div class="py-3 border-b border-gray-800/30 last:border-0">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="text-white font-medium"><?= htmlspecialchars($sub['subscription']); ?></span>
+                                    <span class="px-2 py-1 text-xs font-bold rounded <?= $statusColor; ?>">
+                                        <?= strtoupper($statusText); ?>
+                                    </span>
                                 </div>
-                            <?php
+                                <div class="text-xs text-gray-500">
+                                    Expires: <span class="text-gray-400"><script>document.write(new Date(<?= $sub['expiry'] * 1000; ?>).toLocaleString());</script></span>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="text-center py-4">
+                            <i class="lni lni-warning text-yellow-500 text-3xl mb-2"></i>
+                            <p class="text-gray-400 text-sm">No active subscriptions found.</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-custom-back rounded-xl p-6 border border-gray-800/50 shadow-lg mb-6">
+            <h2 class="text-xl font-semibold text-white mb-2 flex items-center">
+                <i class="lni lni-cog mr-2 text-blue-500"></i> Update Credentials
+            </h2>
+            <p class="text-sm text-gray-400 mb-6">Secure your account by updating your login information.</p>
+            <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label for="username" class="block text-sm font-medium text-gray-400">New Username</label>
+                    <input type="text" id="username" name="username" class="w-full bg-custom-back-1 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 outline-none" placeholder="Leave blank to keep current">
+                </div>
+                <div class="space-y-2">
+                    <label for="password" class="block text-sm font-medium text-gray-400">New Password</label>
+                    <input type="password" id="password" name="password" class="w-full bg-custom-back-1 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 outline-none" placeholder="Leave blank to keep current">
+                </div>
+                <div class="md:col-span-2">
+                    <button name="saveUser" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition duration-200 shadow-lg shadow-blue-600/20">
+                        Save Account Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-custom-back rounded-xl p-6 border border-gray-800/50 shadow-lg">
+                <h2 class="text-xl font-semibold text-white mb-2 flex items-center">
+                    <i class="lni lni-shield mr-2 text-blue-500"></i> HWID Management
+                </h2>
+                <p class="text-sm text-gray-400 mb-6">Reset your hardware ID if you changed components or moved to a new PC.</p>
+                <div>
+                    <?php if ($canReset): ?>
+                        <form method="post">
+                            <button name="resethwid" class="w-full flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-lg shadow-blue-600/20">
+                                <i class="lni lni-reload mr-2 animate-spin-slow"></i> Reset HWID
+                            </button>
+                        </form>
+                    <?php else: ?>
+                        <div class="bg-red-600/10 border border-red-600/20 rounded-xl p-4 text-center">
+                            <p class="text-red-400 text-sm font-medium mb-1">Reset on Cooldown</p>
+                            <p class="text-xs text-red-400/60">Available: <script>document.write(convertTimestamp(<?= json_encode((int)$cooldown, JSON_NUMERIC_CHECK) ?>));</script></p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="bg-custom-back rounded-xl p-6 border border-gray-800/50 shadow-lg">
+                <h2 class="text-xl font-semibold text-white mb-2 flex items-center">
+                    <i class="lni lni-download mr-2 text-blue-500"></i> Software Access
+                </h2>
+                <p class="text-sm text-gray-400 mb-6">Get the latest version of our software directly to your computer.</p>
+                <div>
+                    <?php if (!is_null($download) && !empty($download)): ?>
+                        <a href="<?= $download; ?>" target="_blank" class="w-full flex items-center justify-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-lg shadow-green-600/20">
+                            <i class="lni lni-cloud-download mr-2"></i> Download Application
+                        </a>
+                    <?php else: ?>
+                        <div class="bg-gray-800/50 border border-gray-700/50 rounded-xl p-4 text-center">
+                            <p class="text-gray-400 text-sm font-medium">No download available</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <?php if (!is_null($webdownload) && !empty($webdownload)): ?>
+            <div class="bg-custom-back rounded-xl p-6 border border-gray-800/50 shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h2 class="text-xl font-semibold text-white flex items-center">
+                            <i class="lni lni-control-panel mr-2 text-blue-500"></i> Web Loader
+                        </h2>
+                        <p class="text-sm text-gray-400">Control your application session from your browser</p>
+                    </div>
+                </div>
+                
+                <div id="buttons" style="display: none;" class="mb-6">
+                    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Command Center</h3>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                        <?php
+                        $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=fetchallbuttons";
+                        $curl = curl_init($url);
+                        curl_setopt($curl, CURLOPT_URL, $url);
+                        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                        $resp = curl_exec($curl);
+                        $btnJson = json_decode($resp, true);
+                        $arr = $btnJson['buttons'] ?? [];
+
+                        if ($arr !== "not_found" && is_array($arr)) {
+                            foreach ($arr as $item) {
+                                echo '<button onclick="doButton(this.value)" value="'.htmlspecialchars($item['value']).'" class="bg-gray-800 hover:bg-blue-600 text-gray-300 hover:text-white font-medium py-2.5 px-4 rounded-lg transition duration-200 border border-gray-700 hover:border-blue-500 text-sm">'.htmlspecialchars($item['text']).'</button>';
                             }
-                            ?>
-
-                        </div>
+                        }
+                        ?>
                     </div>
                 </div>
 
-                <div class="footer py-4 d-flex flex-lg-column" id="kt_footer">
-                    <div class="container-fluid d-flex flex-column flex-md-row align-items-center justify-content-between">
-                        <div class="text-dark order-2 order-md-1">
-                            <span class="text-gray-800">Copyright © 2020-
-                                <script type="text/javascript">
-                                    document.write(new Date().getFullYear())
-                                </script> · KeyAuth LLC
-                            </span>
+                <div id="handshake">
+                    <div class="bg-blue-600/5 border border-blue-600/20 rounded-2xl p-8 text-center">
+                        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-600/20 text-blue-500 mb-4">
+                            <i class="lni lni-cloud-sync text-3xl"></i>
                         </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Awaiting Connection</h3>
+                        <p class="text-gray-400 text-sm mb-6 max-w-md mx-auto">To use the web loader, ensure you have the loader running on your system and click the connect button below.</p>
+                        <button onclick="handshake()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition duration-200 shadow-lg shadow-blue-600/20">
+                            Establish Connection
+                        </button>
+                        <a href="<?= $webdownload; ?>" target="_blank" class="block mt-4 text-xs text-gray-500 hover:text-blue-400 transition-colors underline decoration-gray-700 underline-offset-4">Download Loader Executable</a>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        <?php endif; ?>
+    </main>
 
-    <div id="kt_scrolltop" class="scrolltop" data-kt-scrolltop="true">
-        <span class="svg-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <rect opacity="0.5" x="13" y="6" width="13" height="2" rx="1" transform="rotate(90 13 6)" fill="black">
-                </rect>
-                <path d="M12.5657 8.56569L16.75 12.75C17.1642 13.1642 17.8358 13.1642 18.25 12.75C18.6642 12.3358 18.6642 11.6642 18.25 11.25L12.7071 5.70711C12.3166 5.31658 11.6834 5.31658 11.2929 5.70711L5.75 11.25C5.33579 11.6642 5.33579 12.3358 5.75 12.75C6.16421 13.1642 6.83579 13.1642 7.25 12.75L11.4343 8.56569C11.7467 8.25327 12.2533 8.25327 12.5657 8.56569Z" fill="black"></path>
-            </svg>
-        </span>
-    </div>
+    <footer class="border-t border-gray-800 mt-12 py-8 text-center">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div class="text-gray-500 text-sm font-medium">
+                &copy; 2020 - <?= date('Y'); ?> <span class="text-white">KeyAuth LLC</span>. All rights reserved.
+            </div>
+            <div class="flex space-x-6 text-gray-500 text-sm">
+                <a href="https://keyauth.cc/terms" class="hover:text-white transition-colors">Terms of Service</a>
+                <a href="https://keyauth.cc/privacy" class="hover:text-white transition-colors">Privacy Policy</a>   
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
-    <script src="https://cdn.keyauth.cc/v2/panel/plugins/global/plugins.bundle.js" type="text/javascript"></script>
-    <script src="https://cdn.keyauth.cc/v2/panel/js/scripts.bundle.js" type="text/javascript"></script>
-
-    <script src="https://cdn.keyauth.cc/v2/panel/plugins/custom/datatables/datatables.bundle.js" type="text/javascript"></script>
-    <script src="https://cdn.keyauth.cc/v2/panel/plugins/custom/datatables/datatables.js" type="text/javascript"></script>
-
     <script>
+        const notyf = new Notyf({
+            duration: 3500,
+            position: { x: 'right', y: 'top' },
+            dismissible: true
+        });
+
         var going = 1;
 
         function handshake() {
@@ -285,65 +312,82 @@ $customerPanelLink = $KeyAuthApp->customerPanelLink;
                     going = 0;
                     switch (xmlHttp.status) {
                         case 420:
-                            console.log("returned SHEESH :)");
-                            $("#handshake").fadeOut(100);
-                            $("#buttons").fadeIn(1900);
+                            notyf.success("Connected to Web Loader!");
+                            document.getElementById("handshake").style.display = "none";
+                            document.getElementById("buttons").style.display = "block";
                             break;
                         default:
-                            alert(xmlHttp.statusText);
+                            notyf.error("Connection failed: " + xmlHttp.statusText);
                             break;
                     }
                 };
+                xmlHttp.onerror = function() {
+                    if (going == 1) handshake();
+                };
                 xmlHttp.send();
-                if (going == 1) {
-                    handshake();
-                }
             }, 3000);
         }
 
         function doButton(value) {
             var xmlHttp = new XMLHttpRequest();
             xmlHttp.open("GET", "http://localhost:1337/" + value);
+            xmlHttp.onload = function() {
+                notyf.success("Command sent: " + value);
+            };
+            xmlHttp.onerror = function() {
+                notyf.error("Failed to send command. Is loader running?");
+            };
             xmlHttp.send();
         }
     </script>
 
     <?php
-
     if (isset($_POST['resethwid'])) {
-
         $today = time();
-
         $cooldown = $today + $appcooldown;
         $un = $_SESSION['un'];
+        
+        // Reset User
         $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=resetuser&user={$un}";
+        file_get_contents($url);
 
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_exec($curl);
-
+        // Set Cooldown
         $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=setcooldown&user={$un}&cooldown={$cooldown}";
+        file_get_contents($url);
 
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_exec($curl);
+        echo "<script>notyf.success('HWID Reset Successfully!'); setTimeout(() => { window.location.reload(); }, 2000);</script>";
+    }
 
-        echo '
-                            <script type=\'text/javascript\'>
-                            
-                            const notyf = new Notyf();
-                            notyf
-                              .success({
-                                message: \'Reset HWID!\',
-                                duration: 3500,
-                                dismissible: true
-                              });                
-                            
-                            </script>
-                            ';
-        echo "<meta http-equiv='Refresh' Content='2;'>";
+    if (isset($_POST['saveUser'])) {
+        $un = $_SESSION['un'];
+        $newUsername = $_POST['username'] ?? '';
+        $newPassword = $_POST['password'] ?? '';
+
+        if (!empty($newUsername)) {
+            $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=editusername&currentUsername={$un}&newUsername={$newUsername}";
+            $resp = file_get_contents($url);
+            $json = json_decode($resp, true);
+            if ($json['success']) {
+                $_SESSION['un'] = $newUsername;
+                $un = $newUsername;
+                echo "<script>notyf.success('Username updated!');</script>";
+            } else {
+                echo "<script>notyf.error('Failed to update username: {$json['message']}');</script>";
+            }
+        }
+
+        if (!empty($newPassword)) {
+            $url = "https://keyauth.win/api/seller/?sellerkey={$SellerKey}&type=resetpw&user={$un}&passwd={$newPassword}";
+            $resp = file_get_contents($url);
+            $json = json_decode($resp, true);
+            if ($json['success']) {
+                echo "<script>notyf.success('Password updated!');</script>";
+            } else {
+                echo "<script>notyf.error('Failed to update password: {$json['message']}');</script>";
+            }
+        }
+        
+        echo "<script>setTimeout(() => { window.location.reload(); }, 2000);</script>";
     }
     ?>
 </body>

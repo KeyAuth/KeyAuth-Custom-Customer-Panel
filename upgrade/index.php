@@ -19,23 +19,27 @@ if (!isset($_SESSION['sessionid'])) {
 
 ?>
 <!DOCTYPE html>
-<html lang="en" class="bg-[#09090d] text-white overflow-x-hidden">
+<html lang="en" class="bg-custom-back-1 text-white overflow-x-hidden">
 
 <head>
     <meta charset="utf-8">
-
+    <link rel="shortcut icon" href="https://cdn.keyauth.cc/global/imgs/Favicon.png" />
     <?php
 	echo '
 	    <title>KeyAuth - Upgrade Account</title>
-	    <meta name="og:image" content="https://cdn.keyauth.cc/front/assets/img/favicon.png">
+	    <meta name="og:image" content="https://cdn.keyauth.cc/global/imgs/Favicon.png">
         <meta name="description" content="Upgrade your account in  ' . $name . '">
         ';
 	?>
 
+    <!-- Fonts and Icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700">
 
+    <!-- Notify Library (toast) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.keyauth.cc/v3/dist/output.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="https://cdn.keyauth.cc/v4/css/oput.css">
 
     <script>
     if (window.history.replaceState) {
@@ -45,59 +49,43 @@ if (!isset($_SESSION['sessionid'])) {
 </head>
 
 <body>
-    <!--Navbar-->
-    <header>
-        <nav class="border-gray-200 px-4 lg:px-6 py-2.5 mb-14">
-            <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-                <a href="../" class="flex items-center">
-                    <img src="https://cdn.keyauth.cc/v2/assets/media/logos/logo-1-dark.png" class="mr-3 h-12 mt-2"
-                        alt="KeyAuth Logo" />
-                </a>
-            </div>
-        </nav>
-    </header>
+    <!-- Animated Background -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-r from-blue-500/5 to-blue-500/5 rounded-full blur-3xl animate-spin-slow"></div>
+    </div>
 
-    <section>
-        <div class="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 grid lg:grid-cols-2 gap-8 lg:gap-16">
-            <div class="flex flex-col justify-center">
-                <h1
-                    class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white-900 md:text-5xl lg:text-6xl">
-                    <?= $name; ?> Customer Panel</h1>
-                <p class="mb-6 text-lg font-normal text-gray-500 lg:text-xl">To access <a
-                        class="text-blue-600"><?= $name; ?> customer panel</a>,
-                    you must login, or register. This information is provided to you by the owner of the application. Do
-                    not contact KeyAuth support if
-                    you can not access the customer panel.
-                </p>
-            </div>
-            <div>
-                <div class="w-full lg:max-w-xl p-6 space-y-8 sm:p-8 bg-[#09090d] rounded-lg shadow-xl">
-                    <form class="mt-8 space-y-6" method="post">
-                        <div class="relative">
-                            <input type="text" name="username"
-                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white-900 bg-transparent rounded-lg border-1 border-gray-700 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" " autocomplete="on" required />
-                            <label for="username"
-                                class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Username</label>
-                        </div>
-                        <div class="relative">
-                            <input type="text" name="license"
-                                class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white-900 bg-transparent rounded-lg border-1 border-gray-700 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder=" " autocomplete="on" required />
-                            <label for="license"
-                                class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-[#09090d] px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">License</label>
-                        </div>
-                        <button name="upgrade"
-                            class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 sm:w-full">Upgrade
-                        </button>
-                    </form>
+    <section class="flex items-center justify-center min-h-screen">
+        <div class="bg-custom-back rounded-xl p-4 md:p-10 w-full max-w-lg flex flex-col justify-center mx-2">
+            <h1 class="mb-6 text-2xl md:text-3xl text-center font-semibold text-white-900"><?= $name; ?> Customer Panel</h1>
+            <h3 class="mb-8 text-sm md:text-lg text-center font-normal text-gray-300">
+                Return To <a href="../" class="text-blue-500 hover:underline">Sign in</a> or <a href="../register/" class="text-blue-500 hover:underline">Sign up</a> page
+            </h3>
+            <form class="mt-8 space-y-6" method="post">
+                <div class="relative">
+                    <input type="text" name="username"
+                        class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white-900 bg-transparent rounded-lg border-1 border-gray-700 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" " autocomplete="on" required />
+                    <label for="username"
+                        class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-custom-back-lbl px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Username</label>
                 </div>
-            </div>
+                <div class="relative">
+                    <input type="text" name="license"
+                        class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-white-900 bg-transparent rounded-lg border-1 border-gray-700 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                        placeholder=" " autocomplete="on" required />
+                    <label for="license"
+                        class="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-custom-back-lbl px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">License</label>
+                </div>
+                <button name="upgrade"
+                    class="w-full px-5 py-3 text-base font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 sm:w-full">Upgrade
+                </button>
+            </form>
         </div>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
-    <script src="https://cdn.keyauth.cc/v3/dist/flowbite.js"></script>
 
     <?php
 	if (isset($_POST['upgrade'])) {
