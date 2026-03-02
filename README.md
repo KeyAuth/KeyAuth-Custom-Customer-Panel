@@ -12,7 +12,7 @@ Edit 3 lines in `credentials.php` file, watch above tutorial video for help.
 
 ## **Bugs**
 
-If you are using our example with no significant changes, and you are having problems, please Report Bug here https://keyauth.cc/app/?page=forms
+If you are using our example with no significant changes, and you are having problems, please Report Bug here https://keyauth.fdback.io
 
 However, we do **NOT** provide support for adding KeyAuth to your project. If you can't figure this out you should use Google or YouTube to learn more about the programming language you want to sell a program in.
 
